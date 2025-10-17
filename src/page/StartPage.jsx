@@ -1,11 +1,16 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { createCheckoutSession } from "../services/stripeService";
 
 const StartPage = () => {
-  const navigate = useNavigate();
 
-  const handleStart = () => {
-    navigate("/game"); // navigate to your game route
+ const handleStart = async () => {
+    try {
+      const { url } = await createCheckoutSession();
+      window.location.href = url; 
+    } catch (error) {
+      console.error("Error starting game checkout:", error);
+      alert("Payment initialization failed. Please try again.");
+    }
   };
 
   return (
